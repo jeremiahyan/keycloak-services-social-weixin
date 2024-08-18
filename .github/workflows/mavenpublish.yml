@@ -70,20 +70,19 @@ jobs:
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo "${{ secrets.GPG_SIGNING_KEY }}" | tee gpgkey.asc
           gpg --batch --import gpgkey.asc
-          echo "${{ secrets.GPG_OWNER_TRUST }}" 
           echo "${{ secrets.GPG_OWNER_TRUST }}" | base64 --decode | gpg --import-ownertrust
         
           gpg --list-secret-keys --keyid-format LONG
 
           # 这个步骤会将密钥的信任级别设置为 "ultimate"。
-          expect -c "
-            spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
-            expect \"Your decision?\"
-            send \"5\r\"
-            expect \"Do you really want to set this key to ultimate trust? (y/N)\"
-            send \"y\r\"
-            expect eof
-          "
+          #          expect -c "
+          #            spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
+          #            expect \"Your decision?\"
+          #            send \"5\r\"
+          #            expect \"Do you really want to set this key to ultimate trust? (y/N)\"
+          #            send \"y\r\"
+          #            expect eof
+          #          "
 
           mvn -P release --batch-mode deploy -DskipTests -e -X
         env:
