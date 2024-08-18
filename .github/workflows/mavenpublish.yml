@@ -54,6 +54,9 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+      - name: Install expect
+        run: sudo apt-get install -y expect
+
       - name: Set Version
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Publish to Maven Central
@@ -71,7 +74,12 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
 
           # 这个步骤会将密钥的信任级别设置为 "ultimate"。
-          echo -e "5\ny\n" | gpg --batch --yes --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust
+          expect -c "
+            spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
+            expect \"Your decision?\"
+            send \"5\r\"
+            expect eof
+          "
 
           mvn -P release --batch-mode deploy -DskipTests -e -X
         env:
