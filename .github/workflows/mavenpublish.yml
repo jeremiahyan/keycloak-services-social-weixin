@@ -78,6 +78,8 @@ jobs:
             spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
             expect \"Your decision?\"
             send \"5\r\"
+            expect \"Do you really want to set this key to ultimate trust? (y/N)\"
+            send \"y\r\"
             expect eof
           "
 
