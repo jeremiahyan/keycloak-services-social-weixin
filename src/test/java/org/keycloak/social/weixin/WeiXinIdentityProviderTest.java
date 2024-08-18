@@ -114,7 +114,7 @@ public class WeiXinIdentityProviderTest {
         var sut = new WeiXinIdentityProvider(null, config);
 
         var expectedUser = new BrokeredIdentityContext(sut.getJsonProperty(expectedJsonProfile, "unionid"));
-        expectedUser.setUsername(sut.getJsonProperty(expectedJsonProfile, "openid"));
+        expectedUser.setUsername(sut.getJsonProperty(expectedJsonProfile, "unionid"));
         expectedUser.setEmail("null");
 
         var res = sut.getFederatedIdentity(sessionKeyResponse, WechatLoginType.FROM_WECHAT_MINI_PROGRAM, "{\"access_token\":\"" + mockAccessToken + "\",\"expires_in\":7200}");

@@ -6,7 +6,7 @@
     <groupId>org.keycloak</groupId>
     <artifactId>keycloak-services-social-weixin</artifactId>
     <packaging>jar</packaging>
-    <version>0.5.31</version>
+    <version>0.5.32</version>
 
     <name>Keycloak Services Social WeiXin</name>
     <description>Keycloak 微信登录插件，支持 PC 端扫码登录、关注公众号即登录、手机微信等登录方式。</description>
@@ -22,10 +22,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+        <java.version>15</java.version>
         <keycloak.version>23.0.0</keycloak.version>
-        <maven.compiler.target>11</maven.compiler.target>
-        <java.version>11</java.version>
     </properties>
 
     <distributionManagement>
@@ -192,6 +192,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <source>15</source>
                             <stylesheet>java</stylesheet>
                             <doclint>none</doclint>
                         </configuration>
