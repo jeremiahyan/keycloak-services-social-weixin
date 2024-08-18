@@ -53,15 +53,14 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-
-
       - name: Configure GPG
         run: |
-#          echo "use-agent" >> ~/.gnupg/gpg.conf
-#          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-#          echo "${{ secrets.GPG_SIGNING_KEY }}" | tee gpgkey.asc
-#          gpg --batch --import gpgkey.asc
-          gpg --list-secret-keys --keyid-format LONG
+            echo "testing" 
+            #          echo "use-agent" >> ~/.gnupg/gpg.conf
+            #          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+            #          echo "${{ secrets.GPG_SIGNING_KEY }}" | tee gpgkey.asc
+            #          gpg --batch --import gpgkey.asc
+            gpg --list-secret-keys --keyid-format LONG
         shell: bash
 
 
