@@ -74,7 +74,7 @@ jobs:
           echo "${{ secrets.GPG_OWNER_TRUST }}" | base64 --decode | gpg --import-ownertrust
         
           gpg --list-secret-keys --keyid-format LONG
-
+          gpg --keyserver keyserver.ubuntu.com --send-keys 1DAE66E800EDAE81
           # 这个步骤会将密钥的信任级别设置为 "ultimate"。
           #          expect -c "
           #            spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
