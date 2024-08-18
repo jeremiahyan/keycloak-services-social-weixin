@@ -66,7 +66,7 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
         
           echo "manual importing..."
-          echo "default-key 1DAE66E800EDAE81 >> ~/.gnupg/gpg.conf
+          echo "default-key 1DAE66E800EDAE81" >> ~/.gnupg/gpg.conf
           echo "use-agent" >> ~/.gnupg/gpg.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo "${{ secrets.GPG_SIGNING_KEY }}" | tee gpgkey.asc
