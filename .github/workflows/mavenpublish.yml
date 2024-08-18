@@ -69,7 +69,10 @@ jobs:
           gpg --batch --import gpgkey.asc
         
           gpg --list-secret-keys --keyid-format LONG
-          
+
+          # 这个步骤会将密钥的信任级别设置为 "ultimate"。
+          echo -e "5\ny\n" | gpg --batch --yes --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust
+
           mvn -P release --batch-mode deploy -DskipTests -e -X
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
