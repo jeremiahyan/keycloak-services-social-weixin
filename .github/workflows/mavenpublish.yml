@@ -54,38 +54,11 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Install expect
-        run: sudo apt-get install -y expect
-
       - name: Set Version
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Publish to Maven Central
         run: |
-          echo "testing" 
-          
-          gpg --list-secret-keys --keyid-format LONG
-        
-          echo "manual importing..."
-          echo "default-key 1DAE66E800EDAE81" >> ~/.gnupg/gpg.conf
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "${{ secrets.GPG_SIGNING_KEY }}" | tee gpgkey.asc
-          gpg --batch --import gpgkey.asc
-          echo "${{ secrets.GPG_OWNER_TRUST }}" | base64 --decode | gpg --import-ownertrust
-        
-          gpg --list-secret-keys --keyid-format LONG
-          gpg --keyserver keyserver.ubuntu.com --send-keys 1DAE66E800EDAE81
-          # 这个步骤会将密钥的信任级别设置为 "ultimate"。
-          #          expect -c "
-          #            spawn gpg --edit-key BAF134248837ACD6F09C31F11DAE66E800EDAE81 trust quit
-          #            expect \"Your decision?\"
-          #            send \"5\r\"
-          #            expect \"Do you really want to set this key to ultimate trust? (y/N)\"
-          #            send \"y\r\"
-          #            expect eof
-          #          "
-
-          mvn -P release --batch-mode deploy -DskipTests -e -X
+          mvn -P release --batch-mode deploy -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
