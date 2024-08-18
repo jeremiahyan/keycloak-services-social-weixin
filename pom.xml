@@ -215,7 +215,6 @@
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
                             </gpgArguments>
-                            <keyname>BAF134248837ACD6F09C31F11DAE66E800EDAE81</keyname>
                         </configuration>
                     </plugin>
                 </plugins>
