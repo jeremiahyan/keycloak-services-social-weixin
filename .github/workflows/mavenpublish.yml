@@ -58,6 +58,14 @@ jobs:
             echo "testing" 
             
             gpg --list-secret-keys --keyid-format LONG
+          
+          
+            echo "use-agent" >> ~/.gnupg/gpg.conf
+            echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+            echo "${{ secrets.GPG_SIGNING_KEY }}" | base64 --decode | tee gpgkey.asc
+            gpg --batch --import gpgkey.asc
+          
+            gpg --list-secret-keys --keyid-format LONG
         shell: bash
 
 
