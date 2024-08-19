@@ -60,7 +60,10 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: |
           echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --batch --import
-          echo "default-key $(gpg --list-keys --with-colons | grep pub | cut -d: -f5)" >> ~/.gnupg/gpg.conf
+          KEY_ID=$(gpg --list-keys --with-colons | grep pub | cut -d: -f5)
+          echo "default-key $KEY_ID" >> ~/.gnupg/gpg.conf
+          echo "use-agent" >> ~/.gnupg/gpg.conf
+          gpg --list-keys
 
       - name: Set Version
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
