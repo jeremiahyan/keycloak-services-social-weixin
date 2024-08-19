@@ -215,7 +215,6 @@
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
                             </gpgArguments>
-                            <keyname>1DAE66E800EDAE81</keyname> <!-- 替换为你的实际密钥 ID -->
                         </configuration>
                     </plugin>
                 </plugins>
