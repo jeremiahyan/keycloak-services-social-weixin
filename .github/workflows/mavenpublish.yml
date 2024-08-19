@@ -4,6 +4,7 @@
 name: Maven Package
 
 on:
+  push:
   release:
     types: [released]
 
@@ -53,6 +54,13 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Import GPG key
+        env:
+          GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --batch --import
+          echo "default-key $(gpg --list-keys --with-colons | grep pub | cut -d: -f5)" >> ~/.gnupg/gpg.conf
 
       - name: Set Version
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
