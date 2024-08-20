@@ -3,14 +3,30 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.keycloak</groupId>
+    <groupId>io.github.jeff-tian</groupId>
     <artifactId>keycloak-services-social-weixin</artifactId>
     <packaging>jar</packaging>
-    <version>0.5.33</version>
+    <version>0.5.36</version>
 
     <name>Keycloak Services Social WeiXin</name>
     <description>Keycloak 微信登录插件，支持 PC 端扫码登录、关注公众号即登录、手机微信等登录方式。</description>
     <url>https://zhuanlan.zhihu.com/p/652167012</url>
+
+    <developers>
+        <developer>
+            <id>jeff-tian</id>
+            <name>Jeff Tian</name>
+            <email>jeff.tian@outlook.com</email>
+            <url>https://jefftian.dev</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/jeff-tian/keycloak-services-social-weixin</url>
+        <connection>scm:git:git://github.com/jeff-tian/keycloak-services-social-weixin.git</connection>
+        <developerConnection>scm:git:ssh://github.com/jeff-tian/keycloak-services-social-weixin.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <licenses>
         <license>
@@ -186,6 +202,7 @@
                         <executions>
                             <execution>
                                 <id>attach-javadoc</id>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
