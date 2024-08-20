@@ -55,16 +55,6 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Import GPG key
-        env:
-          GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-        run: |
-          echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --batch --import
-          KEY_ID=$(gpg --list-keys --with-colons | grep pub | cut -d: -f5)
-          echo "default-key $KEY_ID" >> ~/.gnupg/gpg.conf
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          gpg --list-keys
-
       - name: Set Version
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Publish to Maven Central
