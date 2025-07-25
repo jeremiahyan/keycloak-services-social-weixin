@@ -243,6 +243,7 @@ keycloak-services-social-weixin/
 - ✅ 修复所有API兼容性问题
 - ✅ 优化Docker构建流程
 - ✅ 添加完整的Makefile支持
+- ✅ 更新作者信息为Jeremiah Yan
 
 ### v0.5.x
 - 支持Keycloak 22.x版本

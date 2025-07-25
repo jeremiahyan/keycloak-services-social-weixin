@@ -243,6 +243,7 @@ Welcome to submit Issues and Pull Requests!
 - ✅ Fixed all API compatibility issues
 - ✅ Optimized Docker build process
 - ✅ Added complete Makefile support
+- ✅ Updated author information to Jeremiah Yan
 
 ### v0.5.x
 - Support for Keycloak 22.x
