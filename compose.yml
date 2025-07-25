@@ -8,7 +8,9 @@ services:
       args:
         - KEYCLOAK_VERSION=latest
         - KEYCLOAK_WEIXIN_VERSION=1.0.1
-    image: dcr.lucidcube.io:6443/lucidcube/keycloak:latest
+    image: ${DOCKER_REGISTRY:-ghcr.io}/${DOCKER_GROUP:-jeremiahyan}/keycloak:latest
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     environment:
