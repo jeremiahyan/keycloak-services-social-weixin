@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class WMPHelper {
     public static String createStateForWMP(String clientId, String tabId) {
-        return IdentityBrokerState.decoded("wmp", clientId, clientId, tabId).getEncoded();
+        return IdentityBrokerState.decoded("wmp", clientId, clientId, tabId, null).getEncoded();
     }
 
     public static UserSessionModel getUserSessionModel(BrokeredIdentityContext context, UserModel federatedUser, AuthenticationSessionModel authSession) {

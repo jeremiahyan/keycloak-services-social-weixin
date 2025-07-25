@@ -113,13 +113,12 @@ public class WeiXinIdentityProvider extends AbstractOAuth2IdentityProvider<OAuth
 
         var externalUserId = unionId != null && !unionId.isEmpty() ? unionId : openId;
 
-        BrokeredIdentityContext user = new BrokeredIdentityContext(externalUserId);
+        BrokeredIdentityContext user = new BrokeredIdentityContext(externalUserId, getConfig());
 
         user.setUsername(externalUserId);
         user.setBrokerUserId(externalUserId);
         user.setModelUsername(externalUserId);
         user.setName(getJsonProperty(profile, "nickname"));
-        user.setIdpConfig(getConfig());
         user.setIdp(this);
         AbstractJsonUserAttributeMapper.storeUserProfileForMapper(user, profile, getConfig().getAlias());
 

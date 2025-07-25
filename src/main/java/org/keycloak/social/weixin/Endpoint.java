@@ -119,7 +119,6 @@ public class Endpoint extends WeiXinIdentityProvider {
                 federatedIdentity.setToken(accessToken);
         }
 
-        federatedIdentity.setIdpConfig(weiXinIdentityProvider.getConfig());
         federatedIdentity.setIdp(weiXinIdentityProvider);
         federatedIdentity.setContextData(Map.of("state", Objects.requireNonNullElse(state, "wmp")));
     }

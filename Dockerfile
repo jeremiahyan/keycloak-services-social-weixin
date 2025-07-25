@@ -1,5 +1,8 @@
-FROM quay.io/keycloak/keycloak:18.0.2
+FROM quay.io/keycloak/keycloak:latest
 
-COPY target/keycloak-services-social-weixin-0.1.1.jar /opt/keycloak/providers/
+ARG KEYCLOAK_WEIXIN_VERSION
+ENV KEYCLOAK_WEIXIN_VERSION=${KEYCLOAK_WEIXIN_VERSION:-1.0.0}
+
+COPY target/keycloak-services-social-weixin-${KEYCLOAK_WEIXIN_VERSION}.jar /opt/keycloak/providers/
 
 CMD ["start-dev", "--hostname-strict=false"]

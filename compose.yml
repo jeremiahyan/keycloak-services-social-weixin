@@ -1,0 +1,19 @@
+# keycloak-compose.yml
+# This file defines a Docker Compose configuration for running Keycloak.
+services:
+  keycloak:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - KEYCLOAK_VERSION=latest
+        - KEYCLOAK_WEIXIN_VERSION=1.0.1
+    image: dcr.lucidcube.io:6443/lucidcube/keycloak:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_VENDOR=h2
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    volumes:
+      - ./data/keycloak:/opt/jboss/keycloak/standalone/data

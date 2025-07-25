@@ -292,6 +292,71 @@ public class TicketStatusProvider implements UserStorageProvider {
             public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> aClass) {
                 return null;
             }
+
+            @Override
+            public <C, T> T callWithConnection(jakarta.persistence.ConnectionFunction<C, T> function) {
+                return null;
+            }
+
+            @Override
+            public <C> void runWithConnection(jakarta.persistence.ConnectionConsumer<C> consumer) {
+                // Empty implementation
+            }
+
+            @Override
+            public <T> jakarta.persistence.TypedQuery<T> createQuery(jakarta.persistence.TypedQueryReference<T> typedQueryReference) {
+                return null;
+            }
+
+            @Override
+            public <T> jakarta.persistence.TypedQuery<T> createQuery(jakarta.persistence.criteria.CriteriaSelect<T> criteriaSelect) {
+                return null;
+            }
+
+            @Override
+            public jakarta.persistence.CacheStoreMode getCacheStoreMode() {
+                return null;
+            }
+
+            @Override
+            public jakarta.persistence.CacheRetrieveMode getCacheRetrieveMode() {
+                return null;
+            }
+
+            @Override
+            public void setCacheStoreMode(jakarta.persistence.CacheStoreMode cacheStoreMode) {
+                // Empty implementation
+            }
+
+            @Override
+            public void setCacheRetrieveMode(jakarta.persistence.CacheRetrieveMode cacheRetrieveMode) {
+                // Empty implementation
+            }
+
+            @Override
+            public void refresh(Object entity, jakarta.persistence.RefreshOption... refreshOptions) {
+                // Empty implementation
+            }
+
+            @Override
+            public void lock(Object entity, jakarta.persistence.LockModeType lockModeType, jakarta.persistence.LockOption... lockOptions) {
+                // Empty implementation
+            }
+
+            @Override
+            public <T> T getReference(T entity) {
+                return entity;
+            }
+
+            @Override
+            public <T> T find(jakarta.persistence.EntityGraph<T> entityGraph, Object primaryKey, jakarta.persistence.FindOption... findOptions) {
+                return null;
+            }
+
+            @Override
+            public <T> T find(Class<T> entityClass, Object primaryKey, jakarta.persistence.FindOption... findOptions) {
+                return null;
+            }
         };
     }
 

@@ -28,7 +28,6 @@ import org.keycloak.protocol.LoginProtocol;
 import org.keycloak.protocol.oidc.TokenManager;
 import org.keycloak.services.ErrorPage;
 import org.keycloak.services.ErrorPageException;
-import org.keycloak.services.HttpRequestImpl;
 import org.keycloak.services.ServicesLogger;
 import org.keycloak.services.managers.AuthenticationManager;
 import org.keycloak.services.managers.AuthenticationSessionManager;
@@ -44,6 +43,7 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 import org.keycloak.social.weixin.helpers.JsonHelper;
 import org.keycloak.social.weixin.helpers.WMPHelper;
 import org.keycloak.util.JsonSerialization;
+import org.keycloak.http.HttpRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +61,7 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
     private KeycloakSession session;
 
     @Context
-    private org.keycloak.http.HttpRequest request;
+    private HttpRequest request;
 
     @Context
     private ClientConnection clientConnection;
@@ -104,82 +104,116 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
             }
         });
 
-        this.request = Objects.requireNonNullElseGet(request, () -> new HttpRequestImpl(new BaseHttpRequest(new ResteasyUriInfo("/", "/")) {
-            @Override
-            public HttpHeaders getHttpHeaders() {
-                return Objects.requireNonNull(session).getContext().getRequestHeaders();
-            }
+        this.request = Objects.requireNonNullElseGet(request, () -> {
+            return new HttpRequest() {
+                private final org.jboss.resteasy.spi.HttpRequest resteasyRequest = new BaseHttpRequest(new ResteasyUriInfo("/", "/")) {
+                    @Override
+                    public HttpHeaders getHttpHeaders() {
+                        return Objects.requireNonNull(session).getContext().getRequestHeaders();
+                    }
 
-            @Override
-            public MultivaluedMap<String, String> getMutableHeaders() {
-                return null;
-            }
+                    @Override
+                    public MultivaluedMap<String, String> getMutableHeaders() {
+                        return null;
+                    }
 
-            @Override
-            public InputStream getInputStream() {
-                return null;
-            }
+                    @Override
+                    public InputStream getInputStream() {
+                        return null;
+                    }
 
-            @Override
-            public void setInputStream(InputStream stream) {
+                    @Override
+                    public void setInputStream(InputStream stream) {
 
-            }
+                    }
 
-            @Override
-            public String getHttpMethod() {
-                return null;
-            }
+                    @Override
+                    public String getHttpMethod() {
+                        return null;
+                    }
 
-            @Override
-            public void setHttpMethod(String method) {
+                    @Override
+                    public void setHttpMethod(String method) {
 
-            }
+                    }
 
-            @Override
-            public Object getAttribute(String attribute) {
-                return null;
-            }
+                    @Override
+                    public Object getAttribute(String attribute) {
+                        return null;
+                    }
 
-            @Override
-            public void setAttribute(String name, Object value) {
+                    @Override
+                    public void setAttribute(String name, Object value) {
 
-            }
+                    }
 
-            @Override
-            public void removeAttribute(String name) {
+                    @Override
+                    public void removeAttribute(String name) {
 
-            }
+                    }
 
-            @Override
-            public Enumeration<String> getAttributeNames() {
-                return null;
-            }
+                    @Override
+                    public Enumeration<String> getAttributeNames() {
+                        return null;
+                    }
 
-            @Override
-            public ResteasyAsynchronousContext getAsyncContext() {
-                return null;
-            }
+                    @Override
+                    public ResteasyAsynchronousContext getAsyncContext() {
+                        return null;
+                    }
 
-            @Override
-            public void forward(String path) {
+                    @Override
+                    public void forward(String path) {
 
-            }
+                    }
 
-            @Override
-            public boolean wasForwarded() {
-                return false;
-            }
+                    @Override
+                    public boolean wasForwarded() {
+                        return false;
+                    }
 
-            @Override
-            public String getRemoteAddress() {
-                return null;
-            }
+                    @Override
+                    public String getRemoteAddress() {
+                        return null;
+                    }
 
-            @Override
-            public String getRemoteHost() {
-                return null;
-            }
-        }));
+                    @Override
+                    public String getRemoteHost() {
+                        return null;
+                    }
+                };
+
+                @Override
+                public String getHttpMethod() {
+                    return resteasyRequest.getHttpMethod();
+                }
+
+                @Override
+                public jakarta.ws.rs.core.HttpHeaders getHttpHeaders() {
+                    return Objects.requireNonNull(session).getContext().getRequestHeaders();
+                }
+
+                @Override
+                public jakarta.ws.rs.core.UriInfo getUri() {
+                    return session.getContext().getUri();
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getClientCertificateChain() {
+                    return new java.security.cert.X509Certificate[0];
+                }
+
+                @Override
+                public jakarta.ws.rs.core.MultivaluedMap<String, org.keycloak.http.FormPartValue> getMultiPartFormParameters() {
+                    return new jakarta.ws.rs.core.MultivaluedHashMap<>();
+                }
+
+                @Override
+                public jakarta.ws.rs.core.MultivaluedMap<String, String> getDecodedFormParameters() {
+                    return new jakarta.ws.rs.core.MultivaluedHashMap<>();
+                }
+            };
+        });
 
         this.event = Objects.requireNonNullElseGet(event, () -> new EventBuilder(this.realmModel, this.session, this.clientConnection)).event(EventType.IDENTITY_PROVIDER_LOGIN);
     }
@@ -281,7 +315,7 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
             return ParsedCodeContext.clientSessionCode(WMPHelper.getClientSessionCode(this, realmModel, session, context));
         }
 
-        SessionCodeChecks checks = new SessionCodeChecks(realmModel, session.getContext().getUri(), request, clientConnection, session, event, null, code, null, clientId, tabId, LoginActionsService.AUTHENTICATE_PATH);
+        SessionCodeChecks checks = new SessionCodeChecks(realmModel, session.getContext().getUri(), request, clientConnection, session, event, null, code, null, clientId, tabId, null, LoginActionsService.AUTHENTICATE_PATH);
 
         checks.initialVerify();
         if (!checks.verifyActiveAndValidAction(AuthenticationSessionModel.Action.AUTHENTICATE.name(), ClientSessionCode.ActionType.LOGIN)) {
@@ -393,7 +427,7 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
         }
         context.getIdp().authenticationFinished(authSession, context);
 
-        AuthenticationManager.setClientScopesInSession(authSession);
+        AuthenticationManager.setClientScopesInSession(session, authSession);
         TokenManager.attachAuthenticationSession(session, userSession, authSession);
 
         logger.debugf("Linking account [%s] from identity provider [%s] to user [%s].", newModel, context.getIdpConfig().getAlias(), authenticatedUser);
@@ -466,7 +500,7 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
                     .setHttpHeaders(headers)
                     .setUriInfo(session.getContext().getUri())
                     .setEventBuilder(event);
-            return protocol.sendError(authSession, error);
+            return protocol.sendError(authSession, error, message);
         }
         return null;
     }
@@ -486,7 +520,7 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
 
         logger.debugf("Performing local authentication for user [%s].", federatedUser);
 
-        AuthenticationManager.setClientScopesInSession(authSession);
+        AuthenticationManager.setClientScopesInSession(session, authSession);
 
         String nextRequiredAction = AuthenticationManager.nextRequiredAction(session, authSession, request, event);
 
@@ -792,4 +826,8 @@ public class WeiXinIdentityBrokerService implements IdentityProvider.Authenticat
         return null;
     }
 
+    @Override
+    public Response retryLogin(IdentityProvider<?> identityProvider, AuthenticationSessionModel authenticationSessionModel) {
+        return null;
+    }
 }

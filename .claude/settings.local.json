@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn compile)",
+      "Bash(mvn install)",
+      "Bash(mvn install -DskipTests)",
+      "Bash(mvn clean compile package -Dmaven.test.skip=true)",
+      "Bash(ls -la target/*.jar)",
+      "Bash(jar -tf target/keycloak-services-social-weixin-0.8.0.jar)",
+      "Bash(docker build -t keycloak-weixin:0.8.0 .)",
+      "Bash(docker run -d --name keycloak-weixin-test -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin keycloak-weixin:0.8.0)",
+      "Bash(docker logs keycloak-weixin-test)",
+      "Bash(curl -s http://localhost:8080/admin/master/console/)",
+      "Bash(docker logs --tail=50 keycloak-weixin-test)",
+      "Bash(docker stop keycloak-weixin-test)",
+      "Bash(docker rm keycloak-weixin-test)",
+      "Bash(docker run -d --name keycloak-weixin-test -p 8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin keycloak-weixin:0.8.0)",
+      "Bash(docker logs --tail=20 keycloak-weixin-test)",
+      "Bash(bash test_plugin.sh)",
+      "Bash(docker logs --tail=10 keycloak-weixin-test)"
+    ],
+    "deny": []
+  }
+}
